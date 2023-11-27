@@ -44,7 +44,7 @@
 #include <sys/capability.h>
 #endif
 
-#define O_RDWR 02
+#define O_RDONLY 00
 #define NVME_SMART_CDW10 0x00800002
 #define SHIFT_BYTE_LEFT 256
 #define PLUGIN_NAME "smart"
@@ -279,7 +279,7 @@ static int get_vendor_id(const char *dev, char const *name) {
   int fd, err;
   __le16 vid;
 
-  fd = open(dev, O_RDWR);
+  fd = open(dev, O_RDONLY);
   if (fd < 0) {
     ERROR(PLUGIN_NAME ": open failed with %s\n", strerror(errno));
     return fd;
@@ -308,7 +308,7 @@ static int smart_read_nvme_disk(const char *dev, char const *name) {
   union nvme_smart_log smart_log = {};
   int fd, status;
 
-  fd = open(dev, O_RDWR);
+  fd = open(dev, O_RDONLY);
   if (fd < 0) {
     ERROR(PLUGIN_NAME ": open failed with %s\n", strerror(errno));
     return fd;
@@ -383,7 +383,7 @@ static int smart_read_nvme_disk(const char *dev, char const *name) {
 }
 
 static int smart_read_nvme_intel_disk(const char *dev, char const *name) {
-  int fd = open(dev, O_RDWR);
+  int fd = open(dev, O_RDONLY);
   if (fd < 0) {
     ERROR(PLUGIN_NAME ": open failed with %s\n", strerror(errno));
     return fd;
